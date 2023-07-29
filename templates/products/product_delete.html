@@ -1,0 +1,51 @@
+
+{% if deleted %}<h1 style="color: green; ">Product Deleted !!!</h1>{% else %}
+<h1>Delete Product</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+.result{
+  background-color: green;
+  color:#fff;
+  padding:20px;
+}
+.row{
+  display:flex;
+}
+</style>
+
+
+<div class="row">
+<div class="col">
+  <div style="width:500px;" id="reader"></div>
+</div>
+<div class="col" style="padding:30px;">
+  <h4>SCAN RESULT</h4>
+  <div id="result">Result Here</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+function onScanSuccess(qrCodeMessage) {
+  document.getElementById('id_qrcode').value = qrCodeMessage;
+  document.getElementById('result').innerHTML = '<span class="result" style="color:geen;">Scaneed !!</span>';
+  document.getElementById("btn").click()
+}
+
+function onScanError(errorMessage) {
+//handle scan error
+}
+
+var html5QrcodeScanner = new Html5QrcodeScanner(
+  "reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+</script>
+
+
+<form method="post" style="display:none;">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button id="btn" type="submit">Create</button>
+</form>
+{% endif %}
